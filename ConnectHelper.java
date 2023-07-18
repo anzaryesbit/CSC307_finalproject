@@ -4,6 +4,10 @@
  * @author Briana Kuo
  */
 
-public class DataSource {
+public class ConnectHelper {
     
+    public void connect() {
+
+    }
+
 }

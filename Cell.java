@@ -1,3 +1,9 @@
+/**
+ * @author Aiyana Arnobit
+ * @author Alec Cheng
+ * @author Briana Kuo
+ */
+
 public class Cell {
     private boolean hasDiamond = false;
     private boolean hasSpider = false;
@@ -15,5 +21,12 @@ public class Cell {
     }
     public void setHasSpider(boolean spider) {
         this.hasSpider = spider;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 }
