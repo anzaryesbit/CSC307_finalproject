@@ -1,12 +1,13 @@
+import javax.swing.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  * @author Aiyana Arnobit
  * @author Alec Cheng
  * @author Briana Kuo
+ * @author Ke Lyu
  */
-
-import javax.swing.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class WorkAreaPanel extends JPanel implements MouseListener {
     

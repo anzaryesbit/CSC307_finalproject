@@ -2,6 +2,7 @@
  * @author Aiyana Arnobit
  * @author Alec Cheng
  * @author Briana Kuo
+ * @author Ke Lyu
  */
 
 public class ProblemHelper {
@@ -9,6 +10,10 @@ public class ProblemHelper {
 
     public void load(int level) {
 
+    }
+
+    public void getProblem(){
+        DataSource.getProblem();
     }
 
     public int getLevel() {
