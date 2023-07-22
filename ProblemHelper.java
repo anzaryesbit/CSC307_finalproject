@@ -2,6 +2,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -59,65 +60,10 @@ public class ProblemHelper {
                     hasSpider=true;
                 }
 
-
                 Cell cell = new Cell(hasDiamond,hasSpider, color,spiderDirection, id);
 
                 problem.add(cell);
             }
-
-            for (Cell item : problem) {
-                System.out.println(item.getId() + " ^^^^^^ " +item.hasDiamond());
-            }
-//            {}
-//            {}
-//            {}
-//            {}
-//            {}
-//            {}
-//            {r}
-//            {}
-//            {b}
-//            {}
-//            {}
-//            {g}
-//            {}
-//            {}
-//            {}
-//            {}
-//            {n}
-//            {}
-//            {}
-//            {}
-//            {}
-//            {}
-//            {}
-//            {}
-//            {},
-//            1 ^^^^^^ false
-//            2 ^^^^^^ false
-//            3 ^^^^^^ false
-//            4 ^^^^^^ false
-//            5 ^^^^^^ false
-//            6 ^^^^^^ false
-//            7 ^^^^^^ true
-//            8 ^^^^^^ false
-//            9 ^^^^^^ true
-//            10 ^^^^^^ false
-//            11 ^^^^^^ false
-//            12 ^^^^^^ true
-//            13 ^^^^^^ false
-//            14 ^^^^^^ false
-//            15 ^^^^^^ false
-//            16 ^^^^^^ false
-//            17 ^^^^^^ false
-//            18 ^^^^^^ false
-//            19 ^^^^^^ false
-//            20 ^^^^^^ false
-//            21 ^^^^^^ false
-//            22 ^^^^^^ false
-//            23 ^^^^^^ false
-//            24 ^^^^^^ false
-//            25 ^^^^^^ false
 
 
         }catch (IOException e){
@@ -125,8 +71,8 @@ public class ProblemHelper {
         }
     }
 
-    public void getProblem(){
-        DataSource.getProblem();
+    public List<Cell> getProblem(){
+        return problem;
     }
 
 
