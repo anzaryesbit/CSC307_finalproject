@@ -2,6 +2,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,46 +24,35 @@ public class ProblemHelper {
 
             int id = 0;
 
+            HashMap<Character, Color> colorMap  =new HashMap<>();
+            colorMap.put('r', Color.RED);
+            colorMap.put('b', Color.BLUE);
+            colorMap.put('g', Color.GREEN);
+
+            HashMap<Character, Character> spiderDirectionMap = new HashMap<>();
+            spiderDirectionMap.put('n', 'n');
+            spiderDirectionMap.put('s', 's');
+            spiderDirectionMap.put('w', 'w');
+            spiderDirectionMap.put('e', 'e');
+
             for (int i =0; i< gridDataArr.length;i++) {
-                System.out.println(gridDataArr[i]);
+//                System.out.println(gridDataArr[i].charAt(1));
                 String currCellData = gridDataArr[i];
 
-                Color color =Color.black;
-
-                boolean hasDiamond=false;
-                boolean hasSpider=false;
-                double spiderDirection=Math.toRadians(90);
-
-
                 id = i+1;
-                if(currCellData.contains("r")){
-                    color = Color.RED;
-                    hasDiamond=true;
-                } else if (currCellData.contains("b")) {
-                    color = Color.BLUE;
-                    hasDiamond=true;
-                } else if (currCellData.contains("g")) {
-                    color = Color.GREEN;
-                    hasDiamond=true;
-                }
+                Color color =colorMap.getOrDefault(currCellData.charAt(1), Color.BLACK);
+                boolean hasDiamond=currCellData.contains("r")|| currCellData.contains("b")|| currCellData.contains("g");
+                boolean hasSpider=currCellData.contains("n")|| currCellData.contains("s") || currCellData.contains("w")|| currCellData.contains("e");
+                char spiderDirection=spiderDirectionMap.getOrDefault(currCellData.charAt(1), 'n');
 
-                if(currCellData.contains("n")){
-                    spiderDirection = Math.toRadians(90);
-                    hasSpider=true;
-                } else if (currCellData.contains("s")) {
-                    spiderDirection = Math.toRadians(270);
-                    hasSpider=true;
-                } else if (currCellData.contains("w")) {
-                    spiderDirection = Math.toRadians(180);
-                    hasSpider=true;
-                } else if (currCellData.contains("e")) {
-                    spiderDirection = Math.toRadians(0);
-                    hasSpider=true;
-                }
 
                 Cell cell = new Cell(hasDiamond,hasSpider, color,spiderDirection, id);
 
                 problem.add(cell);
+//                for(Cell p: problem){
+//                    System.out.println("hasDiamond: "+p.getHasDiamond()+ " hasSpider: " + p.getHasSpider());
+//                }
+//                System.out.println("--------");
             }
 
 
@@ -71,12 +61,9 @@ public class ProblemHelper {
         }
     }
 
-    public List<Cell> getProblem(){
+    public LinkedList<Cell> getProblem(){
         return problem;
     }
 
 
-    public void setProblem(int level) {
-        this.problem = problem;
-    }
 }
