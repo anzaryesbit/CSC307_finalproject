@@ -6,5 +6,7 @@
  */
 
 public class Block extends ParentBlock {
-    
+    Block(int x, int y, String type) {
+        super(x, y, type);
+    }
 }
