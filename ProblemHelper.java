@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
+
 
 /**
  * @author Aiyana Arnobit
@@ -36,7 +36,6 @@ public class ProblemHelper {
             spiderDirectionMap.put('e', 'e');
 
             for (int i =0; i< gridDataArr.length;i++) {
-//                System.out.println(gridDataArr[i].charAt(1));
                 String currCellData = gridDataArr[i];
 
                 id = i+1;
@@ -49,10 +48,7 @@ public class ProblemHelper {
                 Cell cell = new Cell(hasDiamond,hasSpider, color,spiderDirection, id);
 
                 problem.add(cell);
-//                for(Cell p: problem){
-//                    System.out.println("hasDiamond: "+p.getHasDiamond()+ " hasSpider: " + p.getHasSpider());
-//                }
-//                System.out.println("--------");
+
             }
 
 
