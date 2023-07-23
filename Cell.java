@@ -13,14 +13,16 @@ public class Cell {
     private int id;
     private int x;
     private int y;
-    private String color;
+    private char spiderDirection;
+    private Color color = Color.BLACK;
     private Color shownColor = Color.BLACK;
 
-    public Cell(int id, int x, int y, String color){
-        this.id = id;
-        this.x = x;
-        this.y = y;
+    public Cell(boolean hasDiamond, boolean hasSpider, Color color, char spiderDirection, int id){
+        this.hasDiamond = hasDiamond;
+        this.hasSpider = hasSpider;
         this.color = color;
+        this.spiderDirection = spiderDirection;
+        this.id = id;
     }
 
     public boolean getHasDiamond() {
@@ -34,6 +36,10 @@ public class Cell {
         this.hasDiamond = !this.hasDiamond;
     }
 
+    public char getSpiderDirection() {
+        return spiderDirection;
+    }
+
     public boolean getHasSpider() {
         return this.hasSpider;
     }
@@ -41,6 +47,21 @@ public class Cell {
         this.hasSpider = spider;
     }
 
+    public void setX(int x){
+        this.x = x;
+    }
+
+    public int getX(){
+        return this.x;
+    }
+
+    public void setY(int y){
+        this.y = y;
+    }
+
+    public int getY(){
+        return this.y;
+    }
     public void toggleSpider(){
         this.hasSpider = !this.hasSpider;
     }
@@ -54,11 +75,19 @@ public class Cell {
 
     public void draw(Graphics g) {
         g.setColor(this.shownColor);
-        g.fillRect(this.x, this.y, 20, 20);
+        g.fillRect(this.x, this.y, 100, 100);
     }
 
     public void setColor(Color color){
         this.shownColor = color;
+    }
+
+    public Color getColor(){
+        return this.color;
+    }
+
+    public boolean compare(){
+        return this.color == this.shownColor;
     }
 
 }

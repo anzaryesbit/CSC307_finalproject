@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class ProblemHelper {
-    private List<Cell> problem;
+    private LinkedList<Cell> problem = new LinkedList<>();
 
     public void load(int level) {
         try(BufferedReader reader = new BufferedReader(new FileReader("levels/"+level+".txt"))){

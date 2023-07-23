@@ -13,20 +13,16 @@ import java.awt.event.ActionListener;
  */
 
 public class WorldPanel extends JPanel implements ActionListener{
-    World world = new World();
+    World world;
 
     public WorldPanel(){
-        setLayout(new BorderLayout());
-        JPanel gameView = new JPanel();
-        gameView.setPreferredSize(new Dimension(500, getHeight()));
-        gameView.setLayout(new GridLayout(5, 1));
-        gameView.setBackground(Color.LIGHT_GRAY);
-        add(gameView, BorderLayout.WEST);
+        JButton runButton = new JButton("Run");
+        runButton.addActionListener(this);
 
-        JButton run = new JButton("Run");
-        run.addActionListener(this);
-        gameView.add(run);
+        setPreferredSize(new Dimension(600, getHeight()));
+        world = new World();
 
+        repaint();
     }
 
     @Override
