@@ -1,15 +1,21 @@
 import java.awt.*;
 
 public class TrashCan {
+    private DataSource dataSource;
+    int width;
+    int height;
+    int x;
+    int y;
     public TrashCan(){
-
+        dataSource = DataSource.getDataSource();
+        width = 30;
+        height = 50;
+        x = 40;
+        y = 670;
     }
 
+
     public void draw(Graphics g){
-        int width = 30;
-        int height = 50;
-        int x = 40;
-        int y = 670;
         // lid
         g.setColor(Color.BLACK);
         g.fillRect(x - 5, y - 5, width + 10, 10);
@@ -28,6 +34,18 @@ public class TrashCan {
     }
 
 
+    public boolean isBlockOnTrashCan(int blockX, int blockY){
+//        int blockX = block.getX();
+//        int blockY = block.getY();
+        int blockSize = 25;
 
+        boolean XCollision= blockX+ blockSize >x && blockX < x + width;
+        boolean YCollision = blockY + blockSize > y && blockY <y + height;
+
+        System.out.println("^^^^^^^ trashcan touch: " +(XCollision&& YCollision));
+
+        return XCollision&& YCollision;
+
+    }
 
 }
