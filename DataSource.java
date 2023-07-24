@@ -43,6 +43,15 @@ public class DataSource {
     public LinkedList<Block> getProgram() {
         return program;
     }
+
+    public void updatePosition(int x, int y) {
+        System.out.println(program.size());
+        for (int i=0; i<program.size(); i++) {
+            Block block = program.get(i);
+            block.setX(x);
+            block.setY(y+(25*i));
+        }
+    } 
     
     // public ArrayList<Block> getBlocks() {
     //     return blocks;
