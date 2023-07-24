@@ -22,6 +22,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
     private ConnectHelper ch = new ConnectHelper();
     private Color color;
     private String block;
+    private char paintColor = 'r';
     private String[] spawnBlocks = {"true", "true", "true", "false", "false"};
     private boolean dragging;
     private boolean update = false;
@@ -74,6 +75,16 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         g.setColor(Color.WHITE);
         g.drawString(paintBlock.getType(), paintBlock.getX()+12, paintBlock.getY()+15);
 
+        g.setColor(Color.RED);
+        g.fillOval(paintBlock.getX()+10, paintBlock.getY()+13, 8, 8);
+        g.setColor(Color.GREEN);
+        g.fillOval(paintBlock.getX()+20, paintBlock.getY()+13, 8, 8);
+        g.setColor(Color.BLUE);
+        g.fillOval(paintBlock.getX()+30, paintBlock.getY()+13, 8, 8);
+
+        setPaintColor(g, paintColor);
+        g.drawRect(paintBlock.getX(), paintBlock.getY(), 50, 25);
+
         // if (dragging) {
         //     paintBlock();
         //     g.setColor(this.color);
@@ -92,6 +103,25 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
             g.fillRect(curr.getX(), curr.getY(), 50, 25);
             g.setColor(Color.WHITE);
             g.drawString(curr.getType(), curr.getX()+13, curr.getY()+15);
+
+            if (curr.getType().equals("Paint")) {
+                System.out.println("current block has paint color "+ curr.getPaintColor());
+                setPaintColor(g, curr.getPaintColor());
+                g.drawRect(curr.getX(), curr.getY(), 50, 25);
+            }
+        }
+    }
+
+    public void setPaintColor(Graphics g, char c) {
+        switch(c) {
+            case 'r':
+                g.setColor(Color.RED); break;
+            case 'g':
+                g.setColor(Color.GREEN); break;
+            case 'b':
+                g.setColor(Color.BLUE); break;
+            default:
+                break;
         }
     }
 
@@ -100,14 +130,15 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         dragging = true;
         x1 = e.getX();
         y1 = e.getY();
-        //System.out.println("x="+x1+" y="+y1);
+        System.out.println("x="+x1+" y="+y1);
         if ((x1>550) && (x1<600)) {
             if (y1>100 && y1<125) { block = "Step"; }
             else if (y1>150 && y1<175) { block = "Turn"; }
-            else if (y1>200 && y1<225) { block = "Paint"; }
+            else if (y1>200 && y1<225) { block = "Paint"; System.out.println("dragging Paint");}
             else { block = null; }
         }
         else { block = null; }
+
         if ((x1>data.getProgram().getFirst().getX() && x1<data.getProgram().getFirst().getX()+50)) {
             if (y1>data.getProgram().getFirst().getY() && y1<data.getProgram().getFirst().getY()+25) {
                 update = true;
@@ -118,12 +149,24 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         // }
     }
 
+    private void checkPaintType(int x, int y) {
+        if (y>213 && y<221) {
+            if (x>560 && x<568) {paintColor = 'r';}
+            if (x>570 && x<578) {paintColor = 'g';}
+            if (x>580 && x<588) {paintColor = 'b';}
+        }
+        System.out.println("set paint color to "+ paintColor);
+    }
+
     @Override
     public void mouseReleased(MouseEvent e) {
         dragging = false;
         x2 = e.getX();
         y2 = e.getY();
-        ch.connect(block, x2, y2);
+        
+        if (x2 < 500) { ch.connect(block, paintColor, x2, y2); }
+        else { checkPaintType(x2, y2); }
+
         if(update == true) {
             data.updatePosition(x2, y2);
             update = false;
