@@ -21,7 +21,6 @@ public class ProblemHelper {
             String gridDataStr = reader.readLine();
             String[] gridDataArr = gridDataStr.split(", ");
 
-
             int id = 0;
 
             HashMap<Character, Color> colorMap  =new HashMap<>();
