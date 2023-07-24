@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Aiyana Arnobit
@@ -12,10 +13,11 @@ import java.awt.*;
 public class Game extends JFrame {
     public Game() {
         super("Spider Game");
+        AtomicInteger currentLevel = new AtomicInteger(1);
         setLayout(new BorderLayout());
         WorldPanel worldPanel = new WorldPanel();
         WorkAreaPanel workAreaPanel = new WorkAreaPanel();
-        TitledBorder titledBorder = BorderFactory.createTitledBorder("Level: 1");
+        TitledBorder titledBorder = BorderFactory.createTitledBorder("Level workspace");
         titledBorder.setTitleJustification(TitledBorder.CENTER);
         titledBorder.setTitleColor(Color.BLACK);
         CompoundBorder compoundBorder = BorderFactory.createCompoundBorder(new EmptyBorder(10, 0, 0, 0), titledBorder);
@@ -25,11 +27,21 @@ public class Game extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.add(Box.createRigidArea(new Dimension(50, 0)));
+
+        //reset level button here
+        JButton resetLevel = new JButton("Reset Level");
+        resetLevel.setPreferredSize(new Dimension(80, 30));
+        resetLevel.addActionListener(e -> {
+            worldPanel.changeLevel(currentLevel.get());
+            //clear work panel as well somewhere here
+        });
+        buttonPanel.add(resetLevel);
         for (int i = 1; i <= 15; i++) {
             JButton button = new JButton("Level " + i);
             button.setPreferredSize(new Dimension(80, 30));
             int finalI = i;
             button.addActionListener(e -> {
+                currentLevel.set(finalI);
                 worldPanel.changeLevel(finalI);
             });
             buttonPanel.add(button);
