@@ -8,24 +8,19 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
-import javax.swing.JOptionPane;
 
 public class World extends JPanel{
     private ProblemHelper level;
-    private DataSource ds;
     private int programStep = 0;
-    private int currentLevel;
     private int size;
     private Spider spider;
 
-    public World(int loadLevel){
+    public World(int newLevel){
         int i = 0;
         int displacement = 100 + 10;
-        ds = DataSource.getDataSource();
 
         level = new ProblemHelper();
-        currentLevel = loadLevel;
-        level.load(currentLevel);
+        level.load(newLevel);
         size = (int) Math.sqrt(level.getProblem().size());
 
         spider = new Spider();
@@ -36,7 +31,6 @@ public class World extends JPanel{
                 level.getProblem().get(i++).setY(30 + (displacement * col));
             }
         }
-        level.getProblem();
     }
 
     public void paintCell(Cell id, Color c) {
@@ -94,11 +88,11 @@ public class World extends JPanel{
 
     public boolean run() {
 
-        if (programStep == ds.getProgram().size()){
+        if (programStep == DataSource.getDataSource().getProgram().size()){
             System.out.println("returning false");
             return false;
         }
-        Block program = ds.getProgram().get(programStep++);
+        Block program = DataSource.getDataSource().getProgram().get(programStep++);
         if(Objects.equals(program.getType(), "Paint")){
             System.out.println("paint ack");
             for(Cell item : level.getProblem()){
@@ -154,24 +148,13 @@ public class World extends JPanel{
         return true;
     }
 
-    public void compare() {
+    public boolean compare() {
         for (Cell cell : level.getProblem()) {
             if (!cell.compare()) {
-                return;
+                return false;
             }
         }
-
-        int option = JOptionPane.showConfirmDialog(null, "Do you want to proceed to the next level?", "Next Level", JOptionPane.YES_NO_OPTION);
-
-        if (option == JOptionPane.YES_OPTION) {
-            // Load the next level
-            level.load(this.currentLevel);
-            spider.setDirection('\u0000'); // Reset the spider direction
-            programStep = 0; // Reset the program step
-            repaint(); // Repaint the panel to show the new level
-        } else {
-            System.out.println("Next level loading canceled.");
-        }
+        return true;
     }
 
 

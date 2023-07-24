@@ -28,8 +28,9 @@ public class Game extends JFrame {
         for (int i = 1; i <= 15; i++) {
             JButton button = new JButton("Level " + i);
             button.setPreferredSize(new Dimension(80, 30));
+            int finalI = i;
             button.addActionListener(e -> {
-                System.out.println("Button clicked: " + e.getActionCommand());
+                worldPanel.changeLevel(finalI);
             });
             buttonPanel.add(button);
         }

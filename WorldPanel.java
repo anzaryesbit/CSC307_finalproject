@@ -2,8 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.LinkedList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Aiyana Arnobit
@@ -14,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 public class WorldPanel extends JPanel implements ActionListener {
     private World world;
+
+    private int level = 1;
 
     public WorldPanel() {
         setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -27,7 +27,7 @@ public class WorldPanel extends JPanel implements ActionListener {
         add(resetButton);
 
         setPreferredSize(new Dimension(600, getHeight()));
-        world = new World(1);
+        world = new World(level);
     }
 
     @Override
@@ -55,14 +55,27 @@ public class WorldPanel extends JPanel implements ActionListener {
         while(world.run()){
             repaint();
         }
-        System.out.println("run finished");
-        world.compare();
+        if(world.compare()){
+            int option = JOptionPane.showConfirmDialog(null, "Do you want to proceed to the next level?", "Next Level", JOptionPane.YES_NO_OPTION);
+
+            if (option == JOptionPane.YES_OPTION) {
+                // Load the next level
+                changeLevel(++level);
+                repaint(); // Repaint the panel to show the new level
+            } else {
+                System.out.println("Next level loading canceled.");
+            }
+        }
     }
 
     public void reset(){
-        world = new World(1);
+        world = new World(level);
         repaint();
     }
 
+    public void changeLevel(int newLevel){
+        this.level = newLevel;
+        reset();
+    }
 
 }
