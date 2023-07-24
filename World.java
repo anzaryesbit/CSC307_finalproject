@@ -8,6 +8,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
+import javax.swing.JOptionPane;
 
 public class World extends JPanel{
     ProblemHelper level;
@@ -43,16 +44,33 @@ public class World extends JPanel{
 
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        int index = 0;
         for (Cell item : level.getProblem()){
+
             item.draw(g2d);
             if (item.getHasDiamond()){
                 g2d.setColor(item.getColor());
                 g2d.fillRect(item.getX() + 40, item.getY() + 40, 20, 20);
             }
             if(item.getHasSpider()){
-                spider.setDirection(item.getSpiderDirection());
+                char temp = spider.getDirection();
+                if (temp != '\u0000'){
+                    System.out.println(spider.getDirection());
+                }
+                else{
+                    spider.setDirection(item.getSpiderDirection());
+                }
+                int numRows = 5;
+                int numCols = 5;
+                int row = (index/numRows) ;
+                int col = index % numCols ;
+                spider.setX((col*110)+60);
+                spider.setY((row*110)+70);
+                System.out.print("x: " +spider.getX());
+                System.out.println("y: " +spider.getY());
                 spider.draw(g);
             }
+            index++;
         }
     }
 
@@ -74,63 +92,89 @@ public class World extends JPanel{
     }
 
     public boolean run() {
+
         if (programStep == ds.getProgram().size()){
+            System.out.println("returning false");
             return false;
         }
         Block program = ds.getProgram().get(programStep++);
         if(Objects.equals(program.getType(), "Paint")){
+            System.out.println("paint ack");
             for(Cell item : level.getProblem()){
                 if (item.getHasSpider()){
                     paintCell(item, changeToColor(program.getPaintColor()));
-                    return true;
                 }
             }
         }
-        else if (Objects.equals(program.getType(), "Move")) {
+        else if (Objects.equals(program.getType(), "Step")) {
+            System.out.println("step ack");
             int i = 0;
             for (Cell item : level.getProblem()) {
                 if (item.getHasSpider()) {
                     item.toggleSpider();
                     switch (spider.getDirection()) {
                         case 'n' -> {
+                            System.out.println("i: "+ i + " Size: " + size  );
                             level.getProblem().get(i - size).toggleSpider();
-                            spider.setY(spider.getY() - 100);
+                            spider.move();
+                            return true;
+//                            spider.setY(spider.getY() - 100);
                         }
                         case 'e' -> {
+                            System.out.println("i: "+ i);
                             level.getProblem().get(i + 1).toggleSpider();
-                            spider.setX(spider.getX() + 100);
+                            spider.move();
+                            return true;
+//                            spider.setX(spider.getX() + 100);
                         }
                         case 's' -> {
                             level.getProblem().get(i + size).toggleSpider();
-                            spider.setY(spider.getY() + 100);
+                            spider.move();
+                            return true;
+//                            spider.setY(spider.getY() + 100);
                         }
                         default -> {
                             level.getProblem().get(i - 1).toggleSpider();
-                            spider.setX(spider.getX() - 100);
+                            spider.move();
+                            return true;
+//                            spider.setX(spider.getX() - 100);
                         }
                     }
-                    i++;
                 }
+                i++;
             }
         }
-        else{
+        else {
+            System.out.println("turn ack");
             switch (spider.getDirection()) {
                 case 'n' -> spider.setDirection('e');
                 case 'e' -> spider.setDirection('s');
                 case 's' -> spider.setDirection('w');
                 default -> spider.setDirection('n');
             }
+            System.out.println(spider.getDirection());
         }
         return true;
     }
 
     public void compare() {
-        for (Cell cell : level.getProblem()){
-            if(!cell.compare()){
-                return ;
+        for (Cell cell : level.getProblem()) {
+            if (!cell.compare()) {
+                return;
             }
         }
-        level.load(currentLevel++);
+
+        int option = JOptionPane.showConfirmDialog(null, "Do you want to proceed to the next level?", "Next Level", JOptionPane.YES_NO_OPTION);
+
+        if (option == JOptionPane.YES_OPTION) {
+            // Load the next level
+            level.load(currentLevel++);
+            spider.setDirection('\u0000'); // Reset the spider direction
+            programStep = 0; // Reset the program step
+            repaint(); // Repaint the panel to show the new level
+        } else {
+            System.out.println("Next level loading canceled.");
+        }
     }
 
 
