@@ -24,6 +24,7 @@ public class ProblemHelper {
             // TODO: ready to be connected to DataSource, so WrokAreaPanel could have a access to it
             String[] spawnBlockArr = blockDataString.split(", ");
 
+
             int id = 0;
 
             HashMap<Character, Color> colorMap  =new HashMap<>();

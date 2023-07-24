@@ -14,44 +14,56 @@ public class Spider{
     public void move() {
         switch (direction){
             case 'n':
-                y+=20;
+                y+=100;
                 break;
             case 'e':
-                x+=20;
+                x+=100;
                 break;
             case 's':
-                y-=20;
+                y-=100;
                 break;
             case 'w':
-                x-=20;
+                x-=100;
                 break;
         }
     }
 
     public void draw(Graphics g) {
-        System.out.println("draw");
-        System.out.println(x);
-        System.out.println(y);
-        System.out.println(direction);
-
         g.setColor(Color.WHITE);
-        g.fillOval(x - 20, y - 20, 40, 40);
-        g.setColor(Color.WHITE);
-
         switch (direction){
             case 'n':
+                g.fillOval(x - 12, y - 15 , 25, 25);
+                g.fillOval(x - 20, y , 40, 40);
+                g.drawLine(x+30,y+30,x-30,y+30);
+                g.drawLine(x+30,y+22,x-30,y+22);
+                g.drawLine(x+30,y+15,x-30,y+15);
+                g.drawLine(x+30,y+8,x-30,y+8);
+                break;
             case 's':
-                g.drawLine(x+30,y+5,x-30,y+5);
-                g.drawLine(x+30,y+10,x-30,y+10);
-                g.drawLine(x+30,y-10,x-30,y-10);
-                g.drawLine(x+30,y-5,x-30,y-5);
+
+                g.fillOval(x - 12, y + 10, 25, 25);
+                g.fillOval(x - 20, y - 20, 40, 40);
+                g.drawLine(x + 30, y - 10, x - 30, y - 10);
+                g.drawLine(x + 30, y - 2, x - 30, y - 2);
+                g.drawLine(x + 30, y + 5, x - 30, y + 5);
+                g.drawLine(x + 30, y +12, x - 30, y  +12);
                 break;
             case 'e':
+
+                g.fillOval(x ,y - 2, 25, 25);
+                g.fillOval(x - 30, y - 10, 40, 40);
+                g.drawLine(x - 20, y + 40, x - 20, y - 20);
+                g.drawLine(x - 12, y + 40, x - 12, y - 20);
+                g.drawLine(x - 5, y + 40, x - 5, y - 20);
+                g.drawLine(x +2, y + 40, x +2, y - 20);
+                break;
             case 'w':
-                g.drawLine(x+10,y+30,x+10,y-30);
-                g.drawLine(x-10,y+30,x-10,y-30);
-                g.drawLine(x+5,y+30,x+5,y-30);
-                g.drawLine(x-5,y+30,x-5,y-30);
+                g.fillOval(x - 25, y - 2, 25, 25);
+                g.fillOval(x-10, y - 10, 40, 40);
+                g.drawLine(x + 20, y + 40, x + 20, y - 20);
+                g.drawLine(x + 12, y + 40, x + 12, y - 20);
+                g.drawLine(x + 5, y + 40, x + 5, y - 20);
+                g.drawLine(x -2, y + 40, x -2, y - 20);
                 break;
         }
     }
