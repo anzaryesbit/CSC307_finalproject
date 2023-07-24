@@ -12,23 +12,31 @@ import java.awt.event.ActionListener;
  * @author Ke Lyu
  */
 
-public class WorldPanel extends JPanel implements ActionListener{
-    World world;
 
-    public WorldPanel(){
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class WorldPanel extends JPanel implements ActionListener {
+    private World world;
+
+    public WorldPanel() {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
         JButton runButton = new JButton("Run");
         runButton.addActionListener(this);
+        add(runButton);
 
         setPreferredSize(new Dimension(600, getHeight()));
         world = new World();
-
-        repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().getClass().getName().equals("javax.swing.JButton")) {
-            if (((JButton) e.getSource()).getText().equals("Run")) {
+        if (e.getSource() instanceof JButton) {
+            JButton button = (JButton) e.getSource();
+            if ("Run".equals(button.getText())) {
                 System.out.println("Run button clicked");
             }
         }

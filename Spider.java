@@ -29,18 +29,29 @@ public class Spider{
     }
 
     public void draw(Graphics g) {
+        System.out.println("draw");
+        System.out.println(x);
+        System.out.println(y);
+        System.out.println(direction);
+
         g.setColor(Color.WHITE);
-        g.fillOval(x,y,18,18);
+        g.fillOval(x - 20, y - 20, 40, 40);
+        g.setColor(Color.WHITE);
+
         switch (direction){
             case 'n':
             case 's':
-                g.drawLine(x+8,y+5,x-8,y+5);
-                g.drawLine(x+8,y-5,x-8,y-5);
+                g.drawLine(x+30,y+5,x-30,y+5);
+                g.drawLine(x+30,y+10,x-30,y+10);
+                g.drawLine(x+30,y-10,x-30,y-10);
+                g.drawLine(x+30,y-5,x-30,y-5);
                 break;
             case 'e':
             case 'w':
-                g.drawLine(x+5,y+8,x+5,y-8);
-                g.drawLine(x-5,y+8,x-5,y-8);
+                g.drawLine(x+10,y+30,x+10,y-30);
+                g.drawLine(x-10,y+30,x-10,y-30);
+                g.drawLine(x+5,y+30,x+5,y-30);
+                g.drawLine(x-5,y+30,x-5,y-30);
                 break;
         }
     }
