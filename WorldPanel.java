@@ -13,11 +13,6 @@ import java.awt.event.ActionListener;
  */
 
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 public class WorldPanel extends JPanel implements ActionListener {
     private World world;
 
@@ -38,6 +33,7 @@ public class WorldPanel extends JPanel implements ActionListener {
             JButton button = (JButton) e.getSource();
             if ("Run".equals(button.getText())) {
                 System.out.println("Run button clicked");
+                run();
             }
         }
     }
@@ -47,4 +43,12 @@ public class WorldPanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         world.draw(g);
     }
+
+    public void run(){
+        while(world.run()){
+            repaint();
+        }
+        world.compare();
+    }
+
 }
