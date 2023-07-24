@@ -17,7 +17,7 @@ import java.util.LinkedList;
  */
 
 public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionListener {
-    
+
     private DataSource data = DataSource.getDataSource();
     private ConnectHelper ch = new ConnectHelper();
     private Color color;
@@ -30,7 +30,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
 
     TrashCan trashCan;
     Block blockToDelete;
-    
+
     public WorkAreaPanel() {
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -197,7 +197,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         repaint();
     }
 
-    @Override 
+    @Override
     public void mouseDragged(MouseEvent e) {
         x2 = e.getX();
         y2 = e.getY();
