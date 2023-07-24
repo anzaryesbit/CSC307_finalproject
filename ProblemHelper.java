@@ -20,7 +20,9 @@ public class ProblemHelper {
         try(BufferedReader reader = new BufferedReader(new FileReader("levels/"+level+".txt"))){
             String gridDataStr = reader.readLine();
             String[] gridDataArr = gridDataStr.split(", ");
-
+            String blockDataString = reader.readLine();
+            // TODO: ready to be connected to DataSource, so WrokAreaPanel could have a access to it
+            String[] spawnBlockArr = blockDataString.split(", ");
 
             int id = 0;
 
