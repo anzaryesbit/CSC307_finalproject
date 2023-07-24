@@ -28,7 +28,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
     private boolean update = false;
     private int x1, y1, x2, y2;
 
-    TrashCan trashCan; //>>>>>>>>>>>>>>>
+    TrashCan trashCan;
     Block blockToDelete;
     
     public WorkAreaPanel() {
@@ -119,7 +119,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
 
     }
 
-    //>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
     private Block getBlockAtPosition(int x, int y) {
         LinkedList<Block> blockList = data.getProgram();
         for (Block block : blockList) {
@@ -190,7 +190,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
             data.updatePosition(x2, y2);
             update = false;
         }
-        //>>>>>>>>>>>>>>>>>>>>
+
         if (blockToDelete != null && trashCan.isBlockOnTrashCan(blockToDelete)) {
             data.getProgram().remove(blockToDelete);
         }
