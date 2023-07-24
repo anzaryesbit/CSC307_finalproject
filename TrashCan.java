@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.LinkedList;
 
 public class TrashCan {
     private DataSource dataSource;
@@ -34,9 +35,9 @@ public class TrashCan {
     }
 
 
-    public boolean isBlockOnTrashCan(int blockX, int blockY){
-//        int blockX = block.getX();
-//        int blockY = block.getY();
+    public boolean isBlockOnTrashCan(Block block){
+        int blockX = block.getX();
+        int blockY = block.getY();
         int blockSize = 25;
 
         boolean XCollision= blockX+ blockSize >x && blockX < x + width;
@@ -47,5 +48,6 @@ public class TrashCan {
         return XCollision&& YCollision;
 
     }
+
 
 }

@@ -27,11 +27,15 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
     private boolean dragging;
     private boolean update = false;
     private int x1, y1, x2, y2;
+
+    TrashCan trashCan; //>>>>>>>>>>>>>>>
+    Block blockToDelete;
     
     public WorkAreaPanel() {
         addMouseListener(this);
         addMouseMotionListener(this);
         dragging = false;
+        trashCan = new TrashCan();
 
     }
 
@@ -110,6 +114,20 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
                 g.drawRect(curr.getX(), curr.getY(), 50, 25);
             }
         }
+
+        trashCan.draw(g);
+
+    }
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    private Block getBlockAtPosition(int x, int y) {
+        LinkedList<Block> blockList = data.getProgram();
+        for (Block block : blockList) {
+            if (x >= block.getX() && x <= block.getX() + 50 && y >= block.getY() && y <= block.getY() + 25) {
+                return block;
+            }
+        }
+        return null;
     }
 
     public void setPaintColor(Graphics g, char c) {
@@ -130,6 +148,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         dragging = true;
         x1 = e.getX();
         y1 = e.getY();
+
         System.out.println("x="+x1+" y="+y1);
         if ((x1>550) && (x1<600)) {
             if (y1>100 && y1<125) { block = "Step"; }
@@ -163,13 +182,17 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         dragging = false;
         x2 = e.getX();
         y2 = e.getY();
-        
+        blockToDelete = getBlockAtPosition(x2, y2);
         if (x2 < 500) { ch.connect(block, paintColor, x2, y2); }
         else { checkPaintType(x2, y2); }
 
         if(update == true) {
             data.updatePosition(x2, y2);
             update = false;
+        }
+        //>>>>>>>>>>>>>>>>>>>>
+        if (blockToDelete != null && trashCan.isBlockOnTrashCan(blockToDelete)) {
+            data.getProgram().remove(blockToDelete);
         }
         repaint();
     }
