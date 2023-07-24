@@ -11,19 +11,20 @@ import java.util.Objects;
 import javax.swing.JOptionPane;
 
 public class World extends JPanel{
-    ProblemHelper level;
-    DataSource ds;
-    int currentLevel = 1;
-    int programStep = 0;
-    int size;
-    Spider spider;
+    private ProblemHelper level;
+    private DataSource ds;
+    private int programStep = 0;
+    private int currentLevel;
+    private int size;
+    private Spider spider;
 
-    public World(){
+    public World(int loadLevel){
         int i = 0;
         int displacement = 100 + 10;
         ds = DataSource.getDataSource();
 
         level = new ProblemHelper();
+        currentLevel = loadLevel;
         level.load(currentLevel);
         size = (int) Math.sqrt(level.getProblem().size());
 
@@ -118,26 +119,22 @@ public class World extends JPanel{
                             level.getProblem().get(i - size).toggleSpider();
                             spider.move();
                             return true;
-//                            spider.setY(spider.getY() - 100);
                         }
                         case 'e' -> {
                             System.out.println("i: "+ i);
                             level.getProblem().get(i + 1).toggleSpider();
                             spider.move();
                             return true;
-//                            spider.setX(spider.getX() + 100);
                         }
                         case 's' -> {
                             level.getProblem().get(i + size).toggleSpider();
                             spider.move();
                             return true;
-//                            spider.setY(spider.getY() + 100);
                         }
                         default -> {
                             level.getProblem().get(i - 1).toggleSpider();
                             spider.move();
                             return true;
-//                            spider.setX(spider.getX() - 100);
                         }
                     }
                 }
@@ -168,7 +165,7 @@ public class World extends JPanel{
 
         if (option == JOptionPane.YES_OPTION) {
             // Load the next level
-            level.load(currentLevel++);
+            level.load(this.currentLevel);
             spider.setDirection('\u0000'); // Reset the spider direction
             programStep = 0; // Reset the program step
             repaint(); // Repaint the panel to show the new level

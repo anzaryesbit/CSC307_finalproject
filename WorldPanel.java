@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Aiyana Arnobit
@@ -26,7 +27,7 @@ public class WorldPanel extends JPanel implements ActionListener {
         add(resetButton);
 
         setPreferredSize(new Dimension(600, getHeight()));
-        world = new World();
+        world = new World(1);
     }
 
     @Override
@@ -52,7 +53,6 @@ public class WorldPanel extends JPanel implements ActionListener {
 
     public void run(){
         while(world.run()){
-
             repaint();
         }
         System.out.println("run finished");
@@ -60,7 +60,7 @@ public class WorldPanel extends JPanel implements ActionListener {
     }
 
     public void reset(){
-        world = new World();
+        world = new World(1);
         repaint();
     }
 
