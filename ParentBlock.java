@@ -9,15 +9,11 @@ public class ParentBlock {
         this.type = type;
     } 
 
-    public int getX() {
-        return this.x;
-    }
+    public void setX(int x) { this.x = x; }
+    public int getX() { return this.x; }
 
-    public int getY() {
-        return this.y;
-    }
+    public void setY(int y) { this.y = y; }
+    public int getY() { return this.y; }
 
-    public String getType() {
-        return this.type;
-    }
+    public String getType() { return this.type; }
 }

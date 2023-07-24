@@ -24,6 +24,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
     private String block;
     private String[] spawnBlocks = {"true", "true", "true", "false", "false"};
     private boolean dragging;
+    private boolean update = false;
     private int x1, y1, x2, y2;
     
     public WorkAreaPanel() {
@@ -99,7 +100,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         dragging = true;
         x1 = e.getX();
         y1 = e.getY();
-        System.out.println("x="+x1+" y="+y1);
+        //System.out.println("x="+x1+" y="+y1);
         if ((x1>550) && (x1<600)) {
             if (y1>100 && y1<125) { block = "Step"; }
             else if (y1>150 && y1<175) { block = "Turn"; }
@@ -107,15 +108,26 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
             else { block = null; }
         }
         else { block = null; }
-        if(block != null) {
-            System.out.println(block);
+        if ((x1>data.getProgram().getFirst().getX() && x1<data.getProgram().getFirst().getX()+50)) {
+            if (y1>data.getProgram().getFirst().getY() && y1<data.getProgram().getFirst().getY()+25) {
+                update = true;
+            }
         }
+        // if(block != null) {
+        //     //System.out.println(block);
+        // }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         dragging = false;
-        ch.connect(block, e.getX(), e.getY());
+        x2 = e.getX();
+        y2 = e.getY();
+        ch.connect(block, x2, y2);
+        if(update == true) {
+            data.updatePosition(x2, y2);
+            update = false;
+        }
         repaint();
     }
 
