@@ -43,8 +43,6 @@ public class TrashCan {
         boolean XCollision= blockX+ blockSize >x && blockX < x + width;
         boolean YCollision = blockY + blockSize > y && blockY <y + height;
 
-        System.out.println("^^^^^^^ trashcan touch: " +(XCollision&& YCollision));
-
         return XCollision&& YCollision;
 
     }
