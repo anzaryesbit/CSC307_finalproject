@@ -86,6 +86,15 @@ public class World extends JPanel{
         return null;
     }
 
+    public boolean checkLeaveGrid(int i, char dir){
+        return switch (dir) {
+            case 'n' -> i - size > 0;
+            case 'e' -> (i + 1) % 5 != 0;
+            case 's' -> i + size < (size * size + 1);
+            default -> i % 5 != 0;
+        };
+    }
+
     public boolean run() {
 
         if (programStep == DataSource.getDataSource().getProgram().size()){
@@ -106,10 +115,14 @@ public class World extends JPanel{
             int i = 0;
             for (Cell item : level.getProblem()) {
                 if (item.getHasSpider()) {
+                    if(!checkLeaveGrid(i, spider.getDirection())){
+                        JOptionPane.showConfirmDialog(null, "The spider will leave the grid!", "Warning", JOptionPane.DEFAULT_OPTION);
+                        return false;
+                    }
                     item.toggleSpider();
                     switch (spider.getDirection()) {
                         case 'n' -> {
-                            System.out.println("i: "+ i + " Size: " + size  );
+                            System.out.println("i: "+ i + " Size: " + size);
                             level.getProblem().get(i - size).toggleSpider();
                             spider.move();
                             return true;
