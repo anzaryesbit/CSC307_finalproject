@@ -184,7 +184,6 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
     }
 
     public Set<Block> getConnectedNeighbors(Block block){
-        System.out.println("@@@@@@@@@@@@222@@@@@@@@@");
         Set<Block> neighbors = new HashSet<>();
 
         int x = block.getX();
@@ -207,7 +206,6 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
     }
 
     public void deleteConnectedBlocks(LinkedList<Block> queue){
-//        System.out.println("@@@@@@@@@@@@@@@@@@@@@");
         Set<Block> visited = new HashSet<>();
 
 
@@ -241,7 +239,6 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         }
 
         if (blockToDelete != null && trashCan.isBlockOnTrashCan(blockToDelete)) {
-            //System.out.println("detected!!!!!!!!!!");
             LinkedList<Block> queue = new LinkedList<>();
             queue.add(blockToDelete);
             deleteConnectedBlocks(queue);
