@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * @author Aiyana Arnobit
@@ -15,6 +16,8 @@ public class DataSource {
     private LinkedList<Block> program = new LinkedList<>();
     //private ArrayList<Block> blocks = new ArrayList<>();
 
+    private int blockIdCounter =1;
+
     private DataSource(){}
 
     public static DataSource getDataSource(){
@@ -28,15 +31,22 @@ public class DataSource {
         program.clear();
     }
 
+
     public void addProgramBlock(Block block) {
+        block.setId(blockIdCounter);
+        blockIdCounter++;
         program.add(block);
     }
 
     public void addProgramBlockFirst(Block block){
+        block.setId(blockIdCounter);
+        blockIdCounter++;
         program.addFirst(block);
     }
 
     public void addProgramBlockLast(Block block) {
+        block.setId(blockIdCounter);
+        blockIdCounter++;
         program.addLast(block);
     }
 
@@ -51,7 +61,7 @@ public class DataSource {
             block.setX(x);
             block.setY(y+(25*i));
         }
-    } 
+    }
     
     // public ArrayList<Block> getBlocks() {
     //     return blocks;
