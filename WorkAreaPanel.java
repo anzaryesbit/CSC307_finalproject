@@ -5,8 +5,9 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
-
+import java.util.Set;
 
 
 /**
@@ -30,6 +31,8 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
 
     TrashCan trashCan;
     Block blockToDelete;
+
+
 
     public WorkAreaPanel() {
         addMouseListener(this);
@@ -143,6 +146,9 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         }
     }
 
+
+
+
     @Override
     public void mousePressed(MouseEvent e) {
         dragging = true;
@@ -177,6 +183,49 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         System.out.println("set paint color to "+ paintColor);
     }
 
+    public Set<Block> getConnectedNeighbors(Block block){
+        System.out.println("@@@@@@@@@@@@222@@@@@@@@@");
+        Set<Block> neighbors = new HashSet<>();
+
+        int x = block.getX();
+        int y = block.getY();
+
+        for (Block otherBlock : data.getProgram()) {
+            if (otherBlock == block) {
+                continue;
+            }
+
+            int otherX = otherBlock.getX();
+            int otherY = otherBlock.getY();
+
+            if ((x == otherX && Math.abs(y - otherY) == 25) || (y == otherY && Math.abs(x - otherX) == 50)) {
+                neighbors.add(otherBlock);
+            }
+        }
+
+        return neighbors;
+    }
+
+    public void deleteConnectedBlocks(LinkedList<Block> queue){
+//        System.out.println("@@@@@@@@@@@@@@@@@@@@@");
+        Set<Block> visited = new HashSet<>();
+
+
+        while (!queue.isEmpty()){
+            Block currentBlock = queue.removeFirst();
+            visited.add(currentBlock);
+
+            for(Block neighbor: getConnectedNeighbors(currentBlock)){
+                if(!visited.contains(neighbor)){
+                    queue.add(neighbor);
+                }
+            }
+        }
+        for (Block block : visited) {
+            data.getProgram().remove(block);
+        }
+    }
+
     @Override
     public void mouseReleased(MouseEvent e) {
         dragging = false;
@@ -192,7 +241,10 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         }
 
         if (blockToDelete != null && trashCan.isBlockOnTrashCan(blockToDelete)) {
-            data.getProgram().remove(blockToDelete);
+            //System.out.println("detected!!!!!!!!!!");
+            LinkedList<Block> queue = new LinkedList<>();
+            queue.add(blockToDelete);
+            deleteConnectedBlocks(queue);
         }
         repaint();
     }
