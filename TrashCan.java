@@ -2,13 +2,11 @@ import java.awt.*;
 import java.util.LinkedList;
 
 public class TrashCan {
-    private DataSource dataSource;
     int width;
     int height;
     int x;
     int y;
     public TrashCan(){
-        dataSource = DataSource.getDataSource();
         width = 30;
         height = 50;
         x = 40;
