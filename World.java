@@ -169,6 +169,4 @@ public class World extends JPanel{
         }
         return true;
     }
-
-
 }

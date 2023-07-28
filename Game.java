@@ -28,14 +28,6 @@ public class Game extends JFrame {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.add(Box.createRigidArea(new Dimension(50, 0)));
 
-        //reset level button here
-        JButton resetLevel = new JButton("Reset Level");
-        resetLevel.setPreferredSize(new Dimension(80, 30));
-        resetLevel.addActionListener(e -> {
-            worldPanel.changeLevel(currentLevel.get());
-            //clear work panel as well somewhere here
-        });
-        buttonPanel.add(resetLevel);
         for (int i = 1; i <= 15; i++) {
             JButton button = new JButton("Level " + i);
             button.setPreferredSize(new Dimension(80, 30));

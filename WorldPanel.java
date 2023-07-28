@@ -28,6 +28,8 @@ public class WorldPanel extends JPanel implements ActionListener {
 
         setPreferredSize(new Dimension(600, getHeight()));
         world = new World(level);
+
+
     }
 
     @Override
@@ -57,11 +59,9 @@ public class WorldPanel extends JPanel implements ActionListener {
         }
         if(world.compare()){
             int option = JOptionPane.showConfirmDialog(null, "Do you want to proceed to the next level?", "Next Level", JOptionPane.YES_NO_OPTION);
-
             if (option == JOptionPane.YES_OPTION) {
-                // Load the next level
                 changeLevel(++level);
-                repaint(); // Repaint the panel to show the new level
+                repaint();
             } else {
                 System.out.println("Next level loading canceled.");
             }
@@ -77,5 +77,6 @@ public class WorldPanel extends JPanel implements ActionListener {
         this.level = newLevel;
         reset();
     }
+
 
 }
