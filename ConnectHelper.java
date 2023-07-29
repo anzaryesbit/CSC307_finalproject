@@ -10,9 +10,10 @@ import java.awt.*;
  */
 
 public class ConnectHelper {
-    private DataSource ds = DataSource.getDataSource();
+
 
     public void connect(String block, char paintColor, int x, int y) {
+        DataSource ds = DataSource.getDataSource();
         if(block != null) {
             LinkedList<Block> program = ds.getProgram();
             if (program.size() == 0) {
