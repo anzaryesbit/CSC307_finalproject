@@ -33,7 +33,7 @@ public class TrashCan {
     }
 
 
-    public boolean isBlockOnTrashCan(Block block){
+    public boolean isBlockOnTrashCan(ParentBlock block){
         int blockX = block.getX();
         int blockY = block.getY();
         int blockSize = 25;

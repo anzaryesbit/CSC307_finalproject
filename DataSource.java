@@ -13,8 +13,8 @@ import java.util.Set;
 
 public class DataSource {
     private static DataSource instance;
-    private LinkedList<Block> program = new LinkedList<>();
-    //private ArrayList<Block> blocks = new ArrayList<>();
+    private LinkedList<ParentBlock> program = new LinkedList<>();
+    private LinkedList<ParentBlock> parentLoop = new LinkedList<>();
 
     private int blockIdCounter =1;
 
@@ -27,55 +27,47 @@ public class DataSource {
         return instance;
     }
 
-    public void delete(){
-        program.clear();
-    }
+    public void delete() { program.clear(); }
 
 
-    public void addProgramBlock(Block block) {
+    public void addProgramBlock(ParentBlock block) {
         block.setId(blockIdCounter);
         blockIdCounter++;
         program.add(block);
     }
 
-    public void addProgramBlockFirst(Block block){
+    public void addProgramBlockFirst(ParentBlock block){
         block.setId(blockIdCounter);
         blockIdCounter++;
         program.addFirst(block);
     }
 
-    public void addProgramBlockLast(Block block) {
+    public void addProgramBlockLast(ParentBlock block) {
         block.setId(blockIdCounter);
         blockIdCounter++;
         program.addLast(block);
     }
 
-    public LinkedList<Block> getProgram() {
-        return program;
-    }
+    public LinkedList<ParentBlock> getProgram() { return program; }
 
     public void updatePosition(int x, int y) {
-        System.out.println(program.size());
         for (int i=0; i<program.size(); i++) {
-            Block block = program.get(i);
+            ParentBlock block = program.get(i);
             block.setX(x);
             block.setY(y+(25*i));
+            if(block.getType().equals("Loop")) { ((LoopBlock)block).moveSubList(false); }
         }
     }
 
     public void clearProgramBlock(){
         this.program.clear();
     }
-    
-    // public ArrayList<Block> getBlocks() {
-    //     return blocks;
-    // }
 
-    // public void addBlock(Block block) {
-    //     blocks.add(block);
-    // }
 
-    // public Block getBlockAt(int i) {
-    //     return blocks.get(i);
-    // }
+    public void addLoopBlock(ParentBlock block) { parentLoop.add(block); }
+    public void addLoopBlockFirst(ParentBlock block) { parentLoop.addFirst(block); }
+    public void addLoopBlockLast(ParentBlock block) { parentLoop.addLast(block); }
+
+    public LinkedList<ParentBlock> getParentLoop() { return parentLoop; }
+    public void setParentLoop(LinkedList<ParentBlock> parentLoop) { this.parentLoop = parentLoop; }
 }

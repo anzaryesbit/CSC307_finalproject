@@ -101,17 +101,15 @@ public class World extends JPanel{
             System.out.println("returning false");
             return false;
         }
-        Block program = DataSource.getDataSource().getProgram().get(programStep++);
+        ParentBlock program = DataSource.getDataSource().getProgram().get(programStep++);
         if(Objects.equals(program.getType(), "Paint")){
-            System.out.println("paint ack");
             for(Cell item : level.getProblem()){
                 if (item.getHasSpider()){
-                    paintCell(item, changeToColor(program.getPaintColor()));
+                    paintCell(item, changeToColor(((Block)program).getPaintColor()));
                 }
             }
         }
         else if (Objects.equals(program.getType(), "Step")) {
-            System.out.println("step ack");
             int i = 0;
             for (Cell item : level.getProblem()) {
                 if (item.getHasSpider()) {
@@ -122,13 +120,11 @@ public class World extends JPanel{
                     item.toggleSpider();
                     switch (spider.getDirection()) {
                         case 'n' -> {
-                            System.out.println("i: "+ i + " Size: " + size);
                             level.getProblem().get(i - size).toggleSpider();
                             spider.move();
                             return true;
                         }
                         case 'e' -> {
-                            System.out.println("i: "+ i);
                             level.getProblem().get(i + 1).toggleSpider();
                             spider.move();
                             return true;
@@ -149,7 +145,6 @@ public class World extends JPanel{
             }
         }
         else {
-            System.out.println("turn ack");
             switch (spider.getDirection()) {
                 case 'n' -> spider.setDirection('e');
                 case 'e' -> spider.setDirection('s');
