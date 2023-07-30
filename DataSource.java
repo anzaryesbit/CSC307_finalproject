@@ -59,6 +59,11 @@ public class DataSource {
         }
     }
 
+    public void clearProgramBlock(){
+        this.program.clear();
+    }
+
+
     public void addLoopBlock(ParentBlock block) { parentLoop.add(block); }
     public void addLoopBlockFirst(ParentBlock block) { parentLoop.addFirst(block); }
     public void addLoopBlockLast(ParentBlock block) { parentLoop.addLast(block); }
