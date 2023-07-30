@@ -15,6 +15,7 @@ import java.util.LinkedList;
 
 public class ProblemHelper {
     private LinkedList<Cell> problem = new LinkedList<>();
+    private String[] spawnBlockArr;
 
     public void load(int level) {
         try(BufferedReader reader = new BufferedReader(new FileReader("levels/"+level+".txt"))){
@@ -22,7 +23,7 @@ public class ProblemHelper {
             String[] gridDataArr = gridDataStr.split(", ");
             String blockDataString = reader.readLine();
             // TODO: ready to be connected to DataSource, so WrokAreaPanel could have a access to it
-            String[] spawnBlockArr = blockDataString.split(", ");
+            spawnBlockArr = blockDataString.split(", ");
 
 
             int id = 0;
@@ -62,6 +63,10 @@ public class ProblemHelper {
 
     public LinkedList<Cell> getProblem(){
         return problem;
+    }
+
+    public String[] getSpawnBlock() {
+        return spawnBlockArr;
     }
 
 
