@@ -62,6 +62,11 @@ public class DataSource {
             block.setY(y+(25*i));
         }
     }
+
+    //>>>>>>>>>>>>>>>
+    public void clearProgramBlock(){
+        this.program.clear();
+    }
     
     // public ArrayList<Block> getBlocks() {
     //     return blocks;
