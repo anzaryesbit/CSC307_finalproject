@@ -7,7 +7,8 @@ public class ParentBlock {
         this.x = x;
         this.y = y;
         this.type = type;
-    } 
+    }
+
 
     public void setX(int x) { this.x = x; }
     public int getX() { return this.x; }

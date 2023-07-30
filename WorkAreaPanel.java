@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,6 +39,19 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         addMouseMotionListener(this);
         dragging = false;
         trashCan = new TrashCan();
+
+        setLayout(new BorderLayout());
+        JButton resetButton = new JButton("Reset");
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Use FlowLayout with center alignment
+        topPanel.setBackground(Color.LIGHT_GRAY); // Set the background color to grey
+        topPanel.add(resetButton);
+        add(topPanel, BorderLayout.NORTH);
+        resetButton.addActionListener(e -> {
+            DataSource dataSource = DataSource.getDataSource();
+            dataSource.delete();
+            repaint();
+        });
+
 
     }
 
@@ -91,14 +104,6 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
 
         setPaintColor(g, paintColor);
         g.drawRect(paintBlock.getX(), paintBlock.getY(), 50, 25);
-
-        // if (dragging) {
-        //     paintBlock();
-        //     g.setColor(this.color);
-        //     g.fillRect(x2, y2, 100, 50);
-        //     g.setColor(Color.WHITE);
-        //     g.drawString(block, x2+38, y2+28);
-        // }
 
         LinkedList<Block> blockList = data.getProgram();
         for (int i=0; i<blockList.size(); i++) {
