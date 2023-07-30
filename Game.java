@@ -20,6 +20,7 @@ public class Game extends JFrame {
         setLayout(new BorderLayout());
         worldPanel = new WorldPanel();
         workAreaPanel = new WorkAreaPanel();
+        worldPanel.setWorkAreaPanel(workAreaPanel);
         TitledBorder titledBorder = BorderFactory.createTitledBorder("Level workspace");
         titledBorder.setTitleJustification(TitledBorder.CENTER);
         titledBorder.setTitleColor(Color.BLACK);

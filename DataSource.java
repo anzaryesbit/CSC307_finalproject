@@ -63,7 +63,6 @@ public class DataSource {
         }
     }
 
-    //>>>>>>>>>>>>>>>
     public void clearProgramBlock(){
         this.program.clear();
     }

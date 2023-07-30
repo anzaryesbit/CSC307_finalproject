@@ -224,6 +224,12 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         }
     }
 
+
+    public void reset(){
+        data.clearProgramBlock();
+        repaint();
+    }
+
     @Override
     public void mouseReleased(MouseEvent e) {
         dragging = false;

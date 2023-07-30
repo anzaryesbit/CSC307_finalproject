@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 
 public class WorldPanel extends JPanel implements ActionListener {
     private World world;
-
+    private WorkAreaPanel workAreaPanel;
     private int level = 1;
 
     public WorldPanel() {
@@ -28,6 +28,7 @@ public class WorldPanel extends JPanel implements ActionListener {
 
         setPreferredSize(new Dimension(600, getHeight()));
         world = new World(level);
+        workAreaPanel = new WorkAreaPanel();
     }
 
     @Override
@@ -41,6 +42,9 @@ public class WorldPanel extends JPanel implements ActionListener {
             else if ("Reset".equals(button.getText())) {
                 System.out.println("Reset button clicked");
                 reset();
+                workAreaPanel.reset();
+
+
             }
         }
     }
@@ -61,6 +65,7 @@ public class WorldPanel extends JPanel implements ActionListener {
             if (option == JOptionPane.YES_OPTION) {
                 // Load the next level
                 changeLevel(++level);
+                workAreaPanel.reset();
                 repaint(); // Repaint the panel to show the new level
             } else {
                 System.out.println("Next level loading canceled.");
@@ -70,12 +75,17 @@ public class WorldPanel extends JPanel implements ActionListener {
 
     public void reset(){
         world = new World(level);
-        repaint();
+
+//        repaint();
     }
 
     public void changeLevel(int newLevel){
         this.level = newLevel;
         reset();
+    }
+
+    public void setWorkAreaPanel(WorkAreaPanel workAreaPanel) {
+        this.workAreaPanel = workAreaPanel;
     }
 
 }
