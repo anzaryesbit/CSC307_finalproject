@@ -11,12 +11,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public class Game extends JFrame {
+    private AtomicInteger currentLevel = new AtomicInteger(1);
+    private WorldPanel worldPanel;
+    private WorkAreaPanel workAreaPanel;
     public Game() {
         super("Spider Game");
-        AtomicInteger currentLevel = new AtomicInteger(1);
         setLayout(new BorderLayout());
-        WorldPanel worldPanel = new WorldPanel();
-        WorkAreaPanel workAreaPanel = new WorkAreaPanel();
+        setLayout(new BorderLayout());
+        worldPanel = new WorldPanel();
+        workAreaPanel = new WorkAreaPanel();
         TitledBorder titledBorder = BorderFactory.createTitledBorder("Level workspace");
         titledBorder.setTitleJustification(TitledBorder.CENTER);
         titledBorder.setTitleColor(Color.BLACK);
@@ -34,6 +37,9 @@ public class Game extends JFrame {
         resetLevel.addActionListener(e -> {
             worldPanel.changeLevel(currentLevel.get());
             //clear work panel as well somewhere here
+            DataSource data = DataSource.getDataSource();
+            data.clearProgramBlock();
+            repaint();
         });
         buttonPanel.add(resetLevel);
         for (int i = 1; i <= 15; i++) {
