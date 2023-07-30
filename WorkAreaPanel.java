@@ -21,24 +21,21 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
 
     private DataSource data = DataSource.getDataSource();
     private ConnectHelper ch = new ConnectHelper();
-    private Color color;
     private String block;
     private char paintColor = 'r';
     private ProblemHelper ph = new ProblemHelper();
     private String[] spawnBlocks;
-    private boolean dragging;
     private boolean update = false;
     private int x1, y1, x2, y2;
     private int level = 1;
 
     TrashCan trashCan;
-    Block blockToDelete;
+    ParentBlock blockToDelete;
     LoopBlock parentLoop;
 
     public WorkAreaPanel() {
         addMouseListener(this);
         addMouseMotionListener(this);
-        dragging = false;
         trashCan = new TrashCan();
         setLayout(new BorderLayout());
         JButton resetButton = new JButton("Reset");
@@ -62,7 +59,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         else {return Color.GREEN;}
     }
 
-    public void spawnBlock(Graphics g, Block block) {
+    public void spawnBlock(Graphics g, ParentBlock block) {
         g.setColor(paintBlock(block.getType()));
         g.fillRect(block.getX(), block.getY(), 50, 25);
         g.setColor(Color.WHITE);
@@ -71,20 +68,32 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
 
     public void spawnLoopBlock(Graphics g, LoopBlock loopBlock) {
         LinkedList<ParentBlock> loop = loopBlock.getLoop();
+        System.out.println("spawning loop block size " + loop.size() + " at " + loopBlock.getX() + ", " + loopBlock.getY());
 
         int x = loopBlock.getX();
         int y = loopBlock.getY();
         g.setColor(Color.GREEN);
         g.fillRect(x, y, 75, 15);
         g.setColor(Color.WHITE);
-        g.drawString("repeat", x+15, y+11);
+        g.drawString("Repeat", x+15, y+11);
         g.setColor(Color.GREEN);
 
-        System.out.println("loop size " +loop.size());
         g.fillRect(x, y+15, 15, 25*loop.size());
         g.fillRect(x, y+15+(25*loop.size()), 75, 15);
         g.setColor(Color.WHITE);
         g.drawString("until wall", x+15, y+26+(25*loop.size()));
+
+        for (ParentBlock blockInLoop : loop) {
+            System.out.println(blockInLoop.getType());
+            if (blockInLoop.getType().equals("Loop")) { spawnLoopBlock(g, (LoopBlock) blockInLoop); }
+            else { 
+                spawnBlock(g, blockInLoop); 
+                if (blockInLoop.getType().equals("Paint")) {
+                    setPaintColor(g, ((Block)blockInLoop).getPaintColor());
+                    g.drawRect(blockInLoop.getX(), blockInLoop.getY(), 50, 25);
+                }
+            }
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -92,15 +101,15 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         super.paintComponent(g);
 
         if(spawnBlocks[0].equals("true")) {
-            Block stepBlock = new Block(550, 100, "Step");
+            Block stepBlock = new Block(550, 100, "Step", 0);
             spawnBlock(g, stepBlock);
         }
         if(spawnBlocks[1].equals("true")) {
-            Block turnBlock = new Block(550, 150, "Turn");
+            Block turnBlock = new Block(550, 150, "Turn", 0);
             spawnBlock(g, turnBlock);
         }
         if(spawnBlocks[2].equals("true")) {
-            Block paintBlock = new Block(550, 200, "Paint");
+            Block paintBlock = new Block(550, 200, "Paint", 0);
             spawnBlock(g, paintBlock);
 
             g.setColor(Color.RED);
@@ -114,27 +123,33 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
             g.drawRect(paintBlock.getX(), paintBlock.getY(), 50, 25);
         }
         if (spawnBlocks[3].equals("true")) {
-            parentLoop = new LoopBlock(550, 250, "Loop");
+            if (parentLoop == null) {
+                parentLoop = new LoopBlock(550, 250, "Loop", 0);
+            }
             spawnLoopBlock(g, parentLoop);
         }
 
-        LinkedList<Block> blockList = data.getProgram();
+        LinkedList<ParentBlock> blockList = data.getProgram();
         for (int i=0; i<blockList.size(); i++) {
-            Block curr = blockList.get(i);
-            spawnBlock(g, curr);
+            ParentBlock curr = blockList.get(i);
 
-            if (curr.getType().equals("Paint")) {
-                setPaintColor(g, curr.getPaintColor());
-                g.drawRect(curr.getX(), curr.getY(), 50, 25);
+            if (curr.getType().equals("Loop")) { spawnLoopBlock(g, (LoopBlock) curr); }
+            else {
+                spawnBlock(g, curr);
+
+                if (curr.getType().equals("Paint")) {
+                    setPaintColor(g, ((Block)curr).getPaintColor());
+                    g.drawRect(curr.getX(), curr.getY(), 50, 25);
+                }
             }
         }
         trashCan.draw(g);
     }
 
 
-    private Block getBlockAtPosition(int x, int y) {
-        LinkedList<Block> blockList = data.getProgram();
-        for (Block block : blockList) {
+    private ParentBlock getBlockAtPosition(int x, int y) {
+        LinkedList<ParentBlock> blockList = data.getProgram();
+        for (ParentBlock block : blockList) {
             if (x >= block.getX() && x <= block.getX() + 50 && y >= block.getY() && y <= block.getY() + 25) {
                 return block;
             }
@@ -160,7 +175,6 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
 
     @Override
     public void mousePressed(MouseEvent e) {
-        dragging = true;
         x1 = e.getX();
         y1 = e.getY();
 
@@ -188,16 +202,14 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         }
     }
 
-    public Set<Block> getConnectedNeighbors(Block block){
-        Set<Block> neighbors = new HashSet<>();
+    public Set<ParentBlock> getConnectedNeighbors(ParentBlock block){
+        Set<ParentBlock> neighbors = new HashSet<>();
 
         int x = block.getX();
         int y = block.getY();
 
-        for (Block otherBlock : data.getProgram()) {
-            if (otherBlock == block) {
-                continue;
-            }
+        for (ParentBlock otherBlock : data.getProgram()) {
+            if (otherBlock == block) { continue; }
 
             int otherX = otherBlock.getX();
             int otherY = otherBlock.getY();
@@ -206,39 +218,44 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
                 neighbors.add(otherBlock);
             }
         }
-
         return neighbors;
     }
 
-    public void deleteConnectedBlocks(LinkedList<Block> queue){
-        Set<Block> visited = new HashSet<>();
+    public void deleteConnectedBlocks(LinkedList<ParentBlock> queue){
+        Set<ParentBlock> visited = new HashSet<>();
 
 
         while (!queue.isEmpty()){
-            Block currentBlock = queue.removeFirst();
+            ParentBlock currentBlock = queue.removeFirst();
             visited.add(currentBlock);
 
-            for(Block neighbor: getConnectedNeighbors(currentBlock)){
+            for(ParentBlock neighbor: getConnectedNeighbors(currentBlock)){
                 if(!visited.contains(neighbor)){
                     queue.add(neighbor);
                 }
             }
         }
-        for (Block block : visited) {
+        for (ParentBlock block : visited) {
             data.getProgram().remove(block);
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        dragging = false;
         x2 = e.getX();
         y2 = e.getY();
+        ParentBlock blockToAdd;
         blockToDelete = getBlockAtPosition(x2, y2);
         if (x2 < 500) { ch.connect(block, paintColor, x2, y2); }
-        else { 
-            checkPaintType(x2, y2); 
+        else if (x2>565 && x2<625) {
+            if (y2>parentLoop.getY()+5 && y2<parentLoop.getBottom()-5) {
+                blockToAdd = new Block(565, parentLoop.getBottom()-15, block, 0);
+                if(block.equals("Paint")) { ((Block)blockToAdd).setPaintColor(paintColor); }
+                parentLoop.addLastToLoop(blockToAdd);
+                data.setParentLoop(parentLoop.getLoop());
+            }
         }
+        checkPaintType(x2, y2);
 
         if(update == true) {
             data.updatePosition(x2, y2);
@@ -246,7 +263,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         }
 
         if (blockToDelete != null && trashCan.isBlockOnTrashCan(blockToDelete)) {
-            LinkedList<Block> queue = new LinkedList<>();
+            LinkedList<ParentBlock> queue = new LinkedList<>();
             queue.add(blockToDelete);
             deleteConnectedBlocks(queue);
         }
