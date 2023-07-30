@@ -21,7 +21,6 @@ public class ParentBlock {
     public String getType() { return this.type; }
 
     public int getId() { return id; }
-
     public void setId(int id) { this.id=id; }
 
     public int getBottom() { return (this.y+25); };

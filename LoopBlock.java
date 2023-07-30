@@ -13,6 +13,27 @@ public class LoopBlock extends ParentBlock {
     public void addLastToLoop(ParentBlock block) {loopedBlocks.addLast(block);}
     public void removeFirstFromLoop() { loopedBlocks.removeFirst(); }
     public void removeLastFromLoop() { loopedBlocks.removeLast(); }
+
+    public void moveSubList(boolean makeNew) {
+        if (makeNew == true) {
+            LinkedList<ParentBlock> adjustedLoop = new LinkedList<>();
+            for (int i=0; i<loopedBlocks.size(); i++) {
+                ParentBlock block = loopedBlocks.get(i);
+                ParentBlock newBlock = new ParentBlock(super.x+15, super.y+15+(25*i), block.getType(), 0);
+                if (block.getType().equals("Paint")) { ((Block)newBlock).setPaintColor(((Block)block).getPaintColor());}
+                adjustedLoop.add(newBlock);
+            }
+            loopedBlocks = adjustedLoop;
+        }
+        else {
+            for (int i=0; i<loopedBlocks.size(); i++) {
+                ParentBlock block = loopedBlocks.get(i);
+                block.setX(super.x+15);
+                block.setY(super.y+15+(25*i));
+            }
+        }
+    }
+
     @Override
     public int getBottom() {
         return (this.y+(loopedBlocks.size()*25)+30);

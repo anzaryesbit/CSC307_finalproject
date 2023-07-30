@@ -20,7 +20,8 @@ public class ConnectHelper {
             if (program.size() == 0) {
                 if (block.equals("Loop")) {
                     newBlock = new LoopBlock(x, y, block, 0); 
-                    ((LoopBlock)newBlock).setLoop(ds.getParentLoop());
+                    ((LoopBlock)newBlock).getLoop().addAll(ds.getParentLoop());
+                    ((LoopBlock)newBlock).moveSubList(true);
                 }
                 else {
                     newBlock = new Block(x, y, block, 0);
@@ -35,7 +36,8 @@ public class ConnectHelper {
                 if(y>tempY-12 && y<tempY+12) {
                     if (block.equals("Loop")) { 
                         newBlock = new LoopBlock(x, y, block, 0); 
-                        ((LoopBlock)newBlock).setLoop(ds.getParentLoop());
+                        ((LoopBlock)newBlock).getLoop().addAll(ds.getParentLoop());
+                        ((LoopBlock)newBlock).moveSubList(true);
                     }
                     else {
                         newBlock = new Block(tempX, tempY-25, block, 0);
@@ -44,7 +46,11 @@ public class ConnectHelper {
                     ds.addProgramBlockFirst(newBlock);
                 }
                 else if(y>program.getLast().getBottom()-12 && y<program.getLast().getBottom()+12) {
-                    if (block.equals("Loop")) { newBlock = new LoopBlock(tempX, program.getLast().getBottom(), block, 0); }
+                    if (block.equals("Loop")) { 
+                        newBlock = new LoopBlock(tempX, program.getLast().getBottom(), block, 0); 
+                        ((LoopBlock)newBlock).getLoop().addAll(ds.getParentLoop());
+                        ((LoopBlock)newBlock).moveSubList(true);
+                    }
                     else {
                         newBlock = new Block(tempX, program.getLast().getBottom(), block, 0);
                         if(block.equals("Paint")) { ((Block)newBlock).setPaintColor(paintColor); }

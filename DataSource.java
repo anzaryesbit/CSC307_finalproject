@@ -27,9 +27,7 @@ public class DataSource {
         return instance;
     }
 
-    public void delete(){
-        program.clear();
-    }
+    public void delete() { program.clear(); }
 
 
     public void addProgramBlock(ParentBlock block) {
@@ -50,25 +48,21 @@ public class DataSource {
         program.addLast(block);
     }
 
-    public LinkedList<ParentBlock> getProgram() {
-        return program;
-    }
+    public LinkedList<ParentBlock> getProgram() { return program; }
 
     public void updatePosition(int x, int y) {
         for (int i=0; i<program.size(); i++) {
             ParentBlock block = program.get(i);
             block.setX(x);
             block.setY(y+(25*i));
+            if(block.getType().equals("Loop")) { ((LoopBlock)block).moveSubList(false); }
         }
     }
 
     public void addLoopBlock(ParentBlock block) { parentLoop.add(block); }
-
     public void addLoopBlockFirst(ParentBlock block) { parentLoop.addFirst(block); }
-
     public void addLoopBlockLast(ParentBlock block) { parentLoop.addLast(block); }
 
     public LinkedList<ParentBlock> getParentLoop() { return parentLoop; }
-
     public void setParentLoop(LinkedList<ParentBlock> parentLoop) { this.parentLoop = parentLoop; }
 }
