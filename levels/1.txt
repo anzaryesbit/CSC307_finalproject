@@ -1,2 +1,2 @@
 {}, {}, {}, {}, {}, {}, {r}, {}, {b}, {}, {}, {g}, {}, {}, {}, {}, {n}, {}, {}, {}, {}, {}, {}, {}, {}
-true, true, true, false, false
+true, true, true, true

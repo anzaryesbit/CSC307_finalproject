@@ -17,11 +17,16 @@ public class ConnectHelper {
         if(block != null) {
             LinkedList<Block> program = ds.getProgram();
             if (program.size() == 0) {
-                Block newBlock = new Block(x, y, block);
-                if(block.equals("Paint")) { 
-                    newBlock.setPaintColor(paintColor); 
-                    System.out.println("new block w paint color: " +paintColor);}
-                ds.addProgramBlock(newBlock);
+                if (block.equals("Loop")) {
+                    LoopBlock loopBlock = new LoopBlock(x, y, block);
+                }
+                else {
+                    Block newBlock = new Block(x, y, block);
+                    if(block.equals("Paint")) { 
+                        newBlock.setPaintColor(paintColor); 
+                    }
+                    ds.addProgramBlock(newBlock);
+                }
                 return;
             }
             if (x>program.getFirst().getX()-10 && x<program.getFirst().getX()+60) {

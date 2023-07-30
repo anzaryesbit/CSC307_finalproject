@@ -14,7 +14,6 @@ import java.util.Set;
 public class DataSource {
     private static DataSource instance;
     private LinkedList<Block> program = new LinkedList<>();
-    //private ArrayList<Block> blocks = new ArrayList<>();
 
     private int blockIdCounter =1;
 
@@ -55,23 +54,10 @@ public class DataSource {
     }
 
     public void updatePosition(int x, int y) {
-        System.out.println(program.size());
         for (int i=0; i<program.size(); i++) {
             Block block = program.get(i);
             block.setX(x);
             block.setY(y+(25*i));
         }
     }
-    
-    // public ArrayList<Block> getBlocks() {
-    //     return blocks;
-    // }
-
-    // public void addBlock(Block block) {
-    //     blocks.add(block);
-    // }
-
-    // public Block getBlockAt(int i) {
-    //     return blocks.get(i);
-    // }
 }
