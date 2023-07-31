@@ -24,4 +24,5 @@ public class ParentBlock {
     public void setId(int id) { this.id=id; }
 
     public int getBottom() { return (this.y+25); };
+    public int getBlockHeight() {return 25;}
 }

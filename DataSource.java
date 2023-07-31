@@ -51,11 +51,13 @@ public class DataSource {
     public LinkedList<ParentBlock> getProgram() { return program; }
 
     public void updatePosition(int x, int y) {
+        int nextBlockStart = 0;
         for (int i=0; i<program.size(); i++) {
             ParentBlock block = program.get(i);
             block.setX(x);
-            block.setY(y+(25*i));
+            block.setY(y+nextBlockStart);
             if(block.getType().equals("Loop")) { ((LoopBlock)block).moveSubList(false); }
+            nextBlockStart += block.getBlockHeight();
         }
     }
 
