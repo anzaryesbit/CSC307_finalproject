@@ -4,19 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d2507ca-fb1a-494d-ab19-31cecb19ca1c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/levels/2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/levels/2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="6d2507ca-fb1a-494d-ab19-31cecb19ca1c" name="Changes" comment="Reset Buttons fixed">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WorldPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/WorldPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/Block.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/Block.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/ConnectHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/ConnectHelper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/DataSource.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/DataSource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/Game.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/ParentBlock.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/ParentBlock.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/ProblemHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/ProblemHelper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/TrashCan.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/TrashCan.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/WorkAreaPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/WorkAreaPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/World.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/World.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/WorldPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/WorldPanel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/CSC307_finalproject/levels/1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CSC307_finalproject/levels/1.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,6 +28,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2T1z8cpddFL00L5Iafz1Do2pVwX" />
   <component name="ProjectLevelVcsManager">
@@ -37,8 +42,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/alec.cheng/Desktop/CSC307_finalproject",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -55,11 +62,22 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1690225216964</updated>
-      <workItem from="1690225218038" duration="27056000" />
+      <workItem from="1690225218038" duration="33917000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

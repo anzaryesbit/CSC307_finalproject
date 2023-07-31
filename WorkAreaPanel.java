@@ -32,6 +32,8 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
     TrashCan trashCan;
     ParentBlock blockToDelete;
     LoopBlock parentLoop;
+    ParentBlock selectedBlock;
+    int y3;
 
     public WorkAreaPanel() {
         addMouseListener(this);
@@ -44,6 +46,8 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         topPanel.add(resetButton);
         add(topPanel, BorderLayout.NORTH);
         resetButton.addActionListener(e -> {
+            LinkedList<ParentBlock> clear = new LinkedList<>();
+            parentLoop.setLoop(clear);
             DataSource dataSource = DataSource.getDataSource();
             dataSource.delete();
             repaint();
@@ -68,7 +72,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
 
     public void spawnLoopBlock(Graphics g, LoopBlock loopBlock) {
         LinkedList<ParentBlock> loop = loopBlock.getLoop();
-        System.out.println("spawning loop block size " + loop.size() + " at " + loopBlock.getX() + ", " + loopBlock.getY());
+//        System.out.println("spawning loop block size " + loop.size() + " at " + loopBlock.getX() + ", " + loopBlock.getY());
 
         int x = loopBlock.getX();
         int y = loopBlock.getY();
@@ -84,10 +88,10 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         g.drawString("until wall", x+15, y+26+(25*loop.size()));
 
         for (ParentBlock blockInLoop : loop) {
-            System.out.println(blockInLoop.getType());
+//            System.out.println(blockInLoop.getType());
             if (blockInLoop.getType().equals("Loop")) { spawnLoopBlock(g, (LoopBlock) blockInLoop); }
-            else { 
-                spawnBlock(g, blockInLoop); 
+            else {
+                spawnBlock(g, blockInLoop);
                 if (blockInLoop.getType().equals("Paint")) {
                     setPaintColor(g, ((Block)blockInLoop).getPaintColor());
                     g.drawRect(blockInLoop.getX(), blockInLoop.getY(), 50, 25);
@@ -178,20 +182,35 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         x1 = e.getX();
         y1 = e.getY();
 
+        selectedBlock = null;
+        System.out.println("x1: "+x1 +" y1:  " +y1);
         if ((x1>550) && (x1<600)) {
             if (y1>100 && y1<125) { block = "Step"; }
             else if (y1>150 && y1<175) { block = "Turn"; }
             else if (y1>200 && y1<225) { block = "Paint"; }
-            else if (y1>250 && y1<280+(25*parentLoop.getLoopSize())) { block = "Loop"; }
+            else if (y1>250 && y1<280+(25*parentLoop.getLoopSize())) {
+                block = "Loop";
+                if (y1>270 && y1<280+(25*parentLoop.getLoopSize())-20){
+                    System.out.println("inside loop Size = " + parentLoop.getLoopSize() );
+                    y3 = (y1-270);
+                    y3 = ((int) Math.ceil((double) y3 / 25)-1);
+                    selectedBlock = parentLoop.getLoop().get(y3);
+                }
+            }
             else { block = null; }
         }
         else { block = null; }
-
+        System.out.println("block pressed: " + block);
+        if (selectedBlock != null) {
+            System.out.println("selected pressed: " + selectedBlock.getType());
+        }
         if ((x1>data.getProgram().getFirst().getX() && x1<data.getProgram().getFirst().getX()+50)) {
             if (y1>data.getProgram().getFirst().getY() && y1<data.getProgram().getFirst().getY()+25) {
                 update = true;
             }
         }
+
+
     }
 
     private void checkPaintType(int x, int y) {
@@ -252,9 +271,30 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         y2 = e.getY();
         ParentBlock blockToAdd;
         blockToDelete = getBlockAtPosition(x2, y2);
-        if (x2 < 500) { ch.connect(block, paintColor, x2, y2); }
+        if (selectedBlock != null){
+            if (x2 <550 || x2>625){
+                LinkedList<ParentBlock> temp = new LinkedList<>();
+                ParentBlock deleted = parentLoop.getLoop().remove(y3);
+                temp.addAll(y3, parentLoop.getLoop());
+                parentLoop.setLoop(temp);
+
+                int i = 0;
+                System.out.println("delete block: " + deleted.getType());
+                System.out.println("size: " + parentLoop.getLoopSize());
+                for(ParentBlock blk : parentLoop.getLoop()){
+                    if (i>=y3) {
+                        blk.setY(blk.getY() - 25);
+                    }
+                    i++;
+                    System.out.println("blocks in loop: " + blk.getType() + " y: " + blk.getY() + " i/y3: " + i + "/" + y3);
+                }
+
+
+            }
+        }
+        else if (x2 < 500) { ch.connect(block, paintColor, x2, y2); }
         else if (x2>565 && x2<625) {
-            if (y2>parentLoop.getY()+5 && y2<parentLoop.getBottom()-5) {
+            if (y2>parentLoop.getY()+5 && y2<parentLoop.getBottom()-5 && (block != "Loop")) {
                 blockToAdd = new Block(565, parentLoop.getBottom()-15, block, 0);
                 if(block.equals("Paint")) { ((Block)blockToAdd).setPaintColor(paintColor); }
                 parentLoop.addLastToLoop(blockToAdd);

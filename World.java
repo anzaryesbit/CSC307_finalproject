@@ -6,7 +6,9 @@
  */
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class World extends JPanel{
@@ -50,7 +52,6 @@ public class World extends JPanel{
             if(item.getHasSpider()){
                 char temp = spider.getDirection();
                 if (temp != '\u0000'){
-                    System.out.println(spider.getDirection());
                 }
                 else{
                     spider.setDirection(item.getSpiderDirection());
@@ -61,8 +62,6 @@ public class World extends JPanel{
                 int col = index % numCols ;
                 spider.setX((col*110)+60);
                 spider.setY((row*110)+70);
-                System.out.print("x: " +spider.getX());
-                System.out.println("y: " +spider.getY());
                 spider.draw(g);
             }
             index++;
@@ -96,13 +95,12 @@ public class World extends JPanel{
     }
 
     public boolean run() {
-
         if (programStep == DataSource.getDataSource().getProgram().size()){
-            System.out.println("returning false");
             return false;
         }
         ParentBlock program = DataSource.getDataSource().getProgram().get(programStep++);
         if(Objects.equals(program.getType(), "Paint")){
+            System.out.println("paint");
             for(Cell item : level.getProblem()){
                 if (item.getHasSpider()){
                     paintCell(item, changeToColor(((Block)program).getPaintColor()));
@@ -110,48 +108,53 @@ public class World extends JPanel{
             }
         }
         else if (Objects.equals(program.getType(), "Step")) {
-            int i = 0;
-            for (Cell item : level.getProblem()) {
-                if (item.getHasSpider()) {
-                    if(!checkLeaveGrid(i, spider.getDirection())){
-                        JOptionPane.showConfirmDialog(null, "The spider will leave the grid!", "Warning", JOptionPane.DEFAULT_OPTION);
-                        return false;
-                    }
-                    item.toggleSpider();
-                    switch (spider.getDirection()) {
-                        case 'n' -> {
-                            level.getProblem().get(i - size).toggleSpider();
-                            spider.move();
-                            return true;
+            System.out.println("step");
+            step(1);
+        }
+        else if (Objects.equals(program.getType(), "Loop")){
+            LinkedList<ParentBlock> loopBlocks = ((LoopBlock) program).getLoop();
+            System.out.println("loop");
+            while (true) {
+                boolean loopExit = false;
+                for (ParentBlock loopBlock : loopBlocks) {
+                    if (Objects.equals(loopBlock.getType(), "Paint")) {
+                        System.out.println("Loop - paint");
+                        for(Cell item : level.getProblem()){
+                            if (item.getHasSpider()){
+                                paintCell(item, changeToColor(((Block)loopBlock).getPaintColor()));
+                            }
                         }
-                        case 'e' -> {
-                            level.getProblem().get(i + 1).toggleSpider();
-                            spider.move();
-                            return true;
+                    } else if (Objects.equals(loopBlock.getType(), "Step")) {
+                        System.out.println("Loop - step");
+                        if (!step(2)) {
+                            loopExit = true;
+                            break;
                         }
-                        case 's' -> {
-                            level.getProblem().get(i + size).toggleSpider();
-                            spider.move();
-                            return true;
-                        }
-                        default -> {
-                            level.getProblem().get(i - 1).toggleSpider();
-                            spider.move();
-                            return true;
+                    } else {
+                        System.out.println("Loop - turn");
+                        switch (spider.getDirection()) {
+
+                            case 'n' -> spider.setDirection('e');
+                            case 'e' -> spider.setDirection('s');
+                            case 's' -> spider.setDirection('w');
+                            default -> spider.setDirection('n');
                         }
                     }
                 }
-                i++;
+                if (loopExit){
+                    break;
+                }
             }
+
         }
         else {
+            System.out.println("turn");
             switch (spider.getDirection()) {
                 case 'n' -> spider.setDirection('e');
                 case 'e' -> spider.setDirection('s');
                 case 's' -> spider.setDirection('w');
                 default -> spider.setDirection('n');
             }
-            System.out.println(spider.getDirection());
         }
         return true;
     }
@@ -163,5 +166,44 @@ public class World extends JPanel{
             }
         }
         return true;
+    }
+
+    public boolean step(int num){
+        int i = 0;
+        for (Cell item : level.getProblem()) {
+            if (item.getHasSpider()) {
+                if(!checkLeaveGrid(i, spider.getDirection())){
+                    if (num ==1) {
+                        JOptionPane.showConfirmDialog(null, "The spider will leave the grid!", "Warning", JOptionPane.DEFAULT_OPTION);
+                    }
+                    return false;
+                }
+                item.toggleSpider();
+                switch (spider.getDirection()) {
+                    case 'n' -> {
+                        level.getProblem().get(i - size).toggleSpider();
+                        spider.move();
+                        return true;
+                    }
+                    case 'e' -> {
+                        level.getProblem().get(i + 1).toggleSpider();
+                        spider.move();
+                        return true;
+                    }
+                    case 's' -> {
+                        level.getProblem().get(i + size).toggleSpider();
+                        spider.move();
+                        return true;
+                    }
+                    default -> {
+                        level.getProblem().get(i - 1).toggleSpider();
+                        spider.move();
+                        return true;
+                    }
+                }
+            }
+            i++;
+        }
+        return false;
     }
 }

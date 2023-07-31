@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 
 public class WorldPanel extends JPanel implements ActionListener {
     private World world;
-    private WorkAreaPanel workAreaPanel;
     private int level = 1;
 
     public WorldPanel() {
@@ -26,9 +25,12 @@ public class WorldPanel extends JPanel implements ActionListener {
         resetButton.addActionListener(this);
         add(resetButton);
 
+        JButton directionButton = new JButton("Directions");
+        directionButton.addActionListener(this);
+        add(directionButton);
+
         setPreferredSize(new Dimension(600, getHeight()));
         world = new World(level);
-        workAreaPanel = new WorkAreaPanel();
     }
 
     @Override
@@ -42,9 +44,11 @@ public class WorldPanel extends JPanel implements ActionListener {
             else if ("Reset".equals(button.getText())) {
                 System.out.println("Reset button clicked");
                 reset();
-                workAreaPanel.reset();
-
-
+//                workAreaPanel.reset();
+            }
+            else if ("Directions".equals(button.getText())){
+                String directions = "Insert Directions";
+                JOptionPane.showMessageDialog(this, directions, "Directions", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
@@ -63,10 +67,8 @@ public class WorldPanel extends JPanel implements ActionListener {
             int option = JOptionPane.showConfirmDialog(null, "Do you want to proceed to the next level?", "Next Level", JOptionPane.YES_NO_OPTION);
 
             if (option == JOptionPane.YES_OPTION) {
-                // Load the next level
                 changeLevel(++level);
-                workAreaPanel.reset();
-                repaint(); // Repaint the panel to show the new level
+                repaint();
             } else {
                 System.out.println("Next level loading canceled.");
             }
@@ -75,17 +77,12 @@ public class WorldPanel extends JPanel implements ActionListener {
 
     public void reset(){
         world = new World(level);
-
-//        repaint();
+        System.out.println("resest");
+        repaint();
     }
 
     public void changeLevel(int newLevel){
         this.level = newLevel;
         reset();
     }
-
-    public void setWorkAreaPanel(WorkAreaPanel workAreaPanel) {
-        this.workAreaPanel = workAreaPanel;
-    }
-
 }

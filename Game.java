@@ -20,7 +20,6 @@ public class Game extends JFrame {
         setLayout(new BorderLayout());
         worldPanel = new WorldPanel();
         workAreaPanel = new WorkAreaPanel();
-        worldPanel.setWorkAreaPanel(workAreaPanel);
         TitledBorder titledBorder = BorderFactory.createTitledBorder("Level workspace");
         titledBorder.setTitleJustification(TitledBorder.CENTER);
         titledBorder.setTitleColor(Color.BLACK);
@@ -32,17 +31,7 @@ public class Game extends JFrame {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
         buttonPanel.add(Box.createRigidArea(new Dimension(50, 0)));
 
-        //reset level button here
-        JButton resetLevel = new JButton("Reset Level");
-        resetLevel.setPreferredSize(new Dimension(80, 30));
-        resetLevel.addActionListener(e -> {
-            worldPanel.changeLevel(currentLevel.get());
-            //clear work panel as well somewhere here
-            DataSource data = DataSource.getDataSource();
-            data.clearProgramBlock();
-            repaint();
-        });
-        buttonPanel.add(resetLevel);
+
         for (int i = 1; i <= 15; i++) {
             JButton button = new JButton("Level " + i);
             button.setPreferredSize(new Dimension(80, 30));
