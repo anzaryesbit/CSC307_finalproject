@@ -1,0 +1,2 @@
+{n}, {g}, {r}, {b}, {r}, {b}, {b}, {r}, {g}, {g}, {g}, {b}, {r}, {r}, {b}, {g}, {r}, {g}, {g}, {g}, {b}, {b}, {r}, {b}, {g}
+true, true, true, true
