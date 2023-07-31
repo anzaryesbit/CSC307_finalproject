@@ -47,7 +47,10 @@ public class WorldPanel extends JPanel implements ActionListener {
 //                workAreaPanel.reset();
             }
             else if ("Directions".equals(button.getText())){
-                String directions = "Insert Directions";
+                String directions = "Drag and drop the blocks to guide the spider in painting the correct squares.\n" +
+                        "To select a color, click the mouse on the desired colored circle within the paint icon. \n" +
+                        "To create loop blocks, drag desired block into the loop icon. These blocks can be removed by\n" +
+                        " drag and droping the desired block outside the loop icon. ";
                 JOptionPane.showMessageDialog(this, directions, "Directions", JOptionPane.INFORMATION_MESSAGE);
             }
         }
