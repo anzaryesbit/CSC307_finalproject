@@ -28,7 +28,7 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
     private boolean update = false;
     private int x1, y1, x2, y2;
     private int level = 1;
-
+    private ParentBlock draggedBlock = null;
     TrashCan trashCan;
     ParentBlock blockToDelete;
     LoopBlock parentLoop;
@@ -82,14 +82,15 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         g.fillRect(x, y+15+(25*loop.size()), 75, 15);
         g.setColor(Color.WHITE);
         g.drawString("until wall", x+15, y+26+(25*loop.size()));
-
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         for (ParentBlock blockInLoop : loop) {
             System.out.println(blockInLoop.getType());
-            if (blockInLoop.getType().equals("Loop")) { spawnLoopBlock(g, (LoopBlock) blockInLoop); }
-            else { 
-                spawnBlock(g, blockInLoop); 
+            if (blockInLoop instanceof LoopBlock) {
+                spawnLoopBlock(g, (LoopBlock) blockInLoop);
+            } else if (blockInLoop instanceof Block) {
+                spawnBlock(g, (Block) blockInLoop);
                 if (blockInLoop.getType().equals("Paint")) {
-                    setPaintColor(g, ((Block)blockInLoop).getPaintColor());
+                    setPaintColor(g, ((Block) blockInLoop).getPaintColor());
                     g.drawRect(blockInLoop.getX(), blockInLoop.getY(), 50, 25);
                 }
             }
@@ -178,8 +179,14 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         x1 = e.getX();
         y1 = e.getY();
 
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>
         if ((x1>550) && (x1<600)) {
-            if (y1>100 && y1<125) { block = "Step"; }
+
+            if (y1 > parentLoop.getY() && y1 < parentLoop.getBottom())
+            {
+                block = "Loop";
+            }
+            else if (y1>100 && y1<125) { block = "Step"; }
             else if (y1>150 && y1<175) { block = "Turn"; }
             else if (y1>200 && y1<225) { block = "Paint"; }
             else if (y1>250 && y1<280+(25*parentLoop.getLoopSize())) { block = "Loop"; }
@@ -187,11 +194,24 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         }
         else { block = null; }
 
+
         if ((x1>data.getProgram().getFirst().getX() && x1<data.getProgram().getFirst().getX()+50)) {
             if (y1>data.getProgram().getFirst().getY() && y1<data.getProgram().getFirst().getY()+25) {
                 update = true;
             }
         }
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        if (blockToDelete != null && blockToDelete.getType().equals("Loop")) {
+            LinkedList<ParentBlock> loopBlocks = ((LoopBlock) blockToDelete).getLoop();
+            for (ParentBlock loopedBlock : loopBlocks) {
+                if (x1 >= loopedBlock.getX() && x1 <= loopedBlock.getX() + 50
+                        && y1 >= loopedBlock.getY() && y1 <= loopedBlock.getY() + 25) {
+                    draggedBlock = loopedBlock;
+                    break;
+                }
+            }
+        }
+
     }
 
     private void checkPaintType(int x, int y) {
@@ -228,6 +248,12 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
         while (!queue.isEmpty()){
             ParentBlock currentBlock = queue.removeFirst();
             visited.add(currentBlock);
+
+            if (currentBlock instanceof LoopBlock) {
+                for (ParentBlock loopBlock : ((LoopBlock) currentBlock).getLoop()) {
+                    queue.add(loopBlock);
+                }
+            }
 
             for(ParentBlock neighbor: getConnectedNeighbors(currentBlock)){
                 if(!visited.contains(neighbor)){
@@ -273,13 +299,39 @@ public class WorkAreaPanel extends JPanel implements MouseListener, MouseMotionL
             queue.add(blockToDelete);
             deleteConnectedBlocks(queue);
         }
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+        if (draggedBlock != null) {
+            boolean detached = true;
+            if (x2 >= blockToDelete.getX() && x2 <= blockToDelete.getX() + 75
+                    && y2 >= blockToDelete.getY() + 15
+                    && y2 <= blockToDelete.getY() + blockToDelete.getBlockHeight()) {
+                detached = false;
+            }
+
+            if (detached) {
+                LinkedList<ParentBlock> loopBlocks = ((LoopBlock) blockToDelete).getLoop();
+                loopBlocks.remove(draggedBlock);
+                draggedBlock.setX(x2 - 25);
+                draggedBlock.setY(y2 - 12);
+                data.setParentLoop(loopBlocks);
+            }
+            draggedBlock = null;
+        }
+
         repaint();
     }
+
 
     @Override
     public void mouseDragged(MouseEvent e) {
         x2 = e.getX();
         y2 = e.getY();
+        if (draggedBlock != null) {
+            draggedBlock.setX(x2 - 25);
+            draggedBlock.setY(y2 - 12);
+            repaint();
+        }
     }
 
     @Override
